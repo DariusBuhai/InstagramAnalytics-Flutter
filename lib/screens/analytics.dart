@@ -10,7 +10,7 @@ import '../models/favorites.dart';
 import '../models/user.dart';
 import '../utils/route.dart';
 import 'auth/auth.dart';
-import 'companies.dart';
+import 'prediction.dart';
 
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({Key key}) : super(key: key);

@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:core';
 
-const String API_URI = "predict-news-stocks.herokuapp.com";
+const String API_URI = "instagram-analytics-prediction.herokuapp.com";
 const String FULL_API_URI = "https://$API_URI";
 
 class NetworkResponse{

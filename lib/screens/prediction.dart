@@ -6,12 +6,9 @@ import 'package:instagram_analytics/components/buttons/adaptive_button.dart';
 import 'package:instagram_analytics/components/page_templates/main_page_template.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:instagram_analytics/models/user.dart';
-import 'package:instagram_analytics/screens/company.dart';
-
 import '../models/company.dart';
 import '../models/favorites.dart';
 import '../models/stocks.dart';
-import '../utils/route.dart';
 
 class CompaniesScreen extends StatelessWidget {
   const CompaniesScreen({Key key}) : super(key: key);
@@ -19,7 +16,7 @@ class CompaniesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainPageTemplate(
-      title: "Stocks",
+      title: "Predict Posts",
       child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           margin: const EdgeInsets.only(top: 10, bottom: 100),
@@ -139,15 +136,7 @@ class CompanyPreview extends StatelessWidget {
                 ]),
           ),
           const SizedBox(height: 10),
-          AdaptiveButton(
-            text: "Open",
-            textColor: Colors.white,
-            iconData: Icons.open_in_new,
-            onTap: () {
-              Routing.openAnimatedRoute(
-                  context, CompanyScreen(company: company));
-            },
-          )
+
         ],
       ),
     );

@@ -19,19 +19,22 @@ class BottomBar extends StatelessWidget{
         tabs: [
           const BottomNavigationBarItem(
             icon: Icon(
-                Icons.trending_up,
+                CupertinoIcons.hand_thumbsup,
                 size: 26
             ),
-            label: "Stocks",
+            activeIcon: Icon(
+                CupertinoIcons.hand_thumbsup_fill,
+                size: 26),
+            label: "Prediction",
           ),
           const BottomNavigationBarItem(
               icon: Icon(
-                  CupertinoIcons.star_circle,
+                  CupertinoIcons.doc_chart,
                   size: 26),
               activeIcon: Icon(
-                  CupertinoIcons.star_circle_fill,
+                  CupertinoIcons.doc_chart_fill,
                   size: 26),
-              label: "Favorites"),
+              label: "Analytics"),
           BottomNavigationBarItem(
               icon: Icon(
                   Platform.isIOS ? CupertinoIcons.person_circle : Icons.person_outline,
