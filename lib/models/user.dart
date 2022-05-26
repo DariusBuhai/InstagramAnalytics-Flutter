@@ -62,7 +62,7 @@ class User extends ChangeNotifier {
       try {
         if(jsonData['image_id']!=null){
           image = (await NetworkAssetBundle(
-              Uri.https(API_URI, "api/get/auth/image", {"token": token}))
+              Uri.http(API_URI, "api/get/auth/image", {"token": token}))
               .load(""))
               .buffer
               .asUint8List();
@@ -99,7 +99,7 @@ class User extends ChangeNotifier {
         }
         break;
     }
-    await http.post(Uri.https(API_URI, "api/post/auth/logout"),
+    await http.post(Uri.http(API_URI, "api/post/auth/logout"),
         body: jsonEncode({"token": token}));
     optionsBox.delete("token");
     optionsBox.delete("login-type");
@@ -108,7 +108,7 @@ class User extends ChangeNotifier {
   }
 
   Future<void> delete() async {
-    await http.post(Uri.https(API_URI, "api/post/auth/delete"),
+    await http.post(Uri.http(API_URI, "api/post/auth/delete"),
         body: jsonEncode({"token": token}));
     await logOut();
   }
@@ -161,7 +161,7 @@ class User extends ChangeNotifier {
 
   static Future<User> getFromSessionToken(String token) async {
     http.Response response = await http
-        .get(Uri.https(API_URI, "api/get/auth/user", {"token": token}));
+        .get(Uri.http(API_URI, "api/get/auth/user", {"token": token}));
     if (response.statusCode != 200) return null;
 
     return User.parseFromJson(jsonDecode(response.body), token);
@@ -177,7 +177,7 @@ class User extends ChangeNotifier {
       if (result.status != LoginStatus.success) return false;
       facebookToken = result.accessToken.token;
     }
-    var response = await http.post(Uri.https(API_URI, "api/post/auth/facebook"),
+    var response = await http.post(Uri.http(API_URI, "api/post/auth/facebook"),
         body: jsonEncode({
           "token": facebookToken,
           "platform": Platform.isIOS ? 'ios' : 'android',
@@ -212,7 +212,7 @@ class User extends ChangeNotifier {
     }
     if (recommendedUsername == "") recommendedUsername = credential.email;
     print(credential.identityToken);
-    var response = await http.post(Uri.https(API_URI, "api/post/auth/apple"),
+    var response = await http.post(Uri.http(API_URI, "api/post/auth/apple"),
         body: jsonEncode({
           "token": credential.identityToken,
           "username": recommendedUsername,
@@ -235,7 +235,7 @@ class User extends ChangeNotifier {
 
   static Future<dynamic> performLinkedInAuth(
       BuildContext context, String code) async {
-    var response = await http.post(Uri.https(API_URI, "api/post/auth/linkedin"),
+    var response = await http.post(Uri.http(API_URI, "api/post/auth/linkedin"),
         body: jsonEncode(
             {"platform": Platform.isIOS ? 'ios' : 'android', "code": code}));
     if (response.statusCode != 200) return NetworkError(response: response);
@@ -254,7 +254,7 @@ class User extends ChangeNotifier {
 
   static Future<dynamic> performLogin(
       String username, String password, BuildContext context) async {
-    var response = await http.post(Uri.https(API_URI, "api/post/auth/login"),
+    var response = await http.post(Uri.http(API_URI, "api/post/auth/login"),
         body: jsonEncode({
           "username": username,
           "password": password,
@@ -276,7 +276,7 @@ class User extends ChangeNotifier {
 
   static Future<dynamic> performRegister(
       String name, String email, String password, BuildContext context) async {
-    var response = await http.post(Uri.https(API_URI, "api/post/auth/register"),
+    var response = await http.post(Uri.http(API_URI, "api/post/auth/register"),
         body: jsonEncode({
           "name": name,
           "email": email,
@@ -290,7 +290,7 @@ class User extends ChangeNotifier {
   Future<User> updateUserProfilePicture(ByteData newImage) async {
     var image64 = base64Encode(newImage.buffer.asUint8List());
     await http.post(
-        Uri.https(API_URI, "/api/post/auth/image", {"token": token}),
+        Uri.http(API_URI, "/api/post/auth/image", {"token": token}),
         body: image64);
     image = newImage.buffer.asUint8List();
     notifyListeners();
@@ -300,7 +300,7 @@ class User extends ChangeNotifier {
   Future<dynamic> updateUserPassword(
       String oldPassword, String newPassword) async {
     var response = await http.put(
-        Uri.https(API_URI, "/api/put/auth/update_password"),
+        Uri.http(API_URI, "/api/put/auth/update_password"),
         body: jsonEncode({
           "token": token,
           "old_password": oldPassword,
@@ -313,14 +313,14 @@ class User extends ChangeNotifier {
   static Future<dynamic> resetUserPassword(
       String email, String newPassword) async {
     var response = await http.put(
-        Uri.https(API_URI, "/api/put/auth/reset_password"),
+        Uri.http(API_URI, "/api/put/auth/reset_password"),
         body: jsonEncode({"email": email, "password": newPassword}));
     if (response.statusCode != 200) return NetworkError(response: response);
     return true;
   }
 
   Future<dynamic> updateUser() async {
-    var response = await http.put(Uri.https(API_URI, "/api/put/user"),
+    var response = await http.put(Uri.http(API_URI, "/api/put/user"),
         body: jsonEncode({"token": token, "user": toJson()}));
     if (response.statusCode != 200) return NetworkError(response: response);
     notifyListeners();

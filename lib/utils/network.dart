@@ -4,8 +4,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:core';
 
-const String API_URI = "instagram-analytics-prediction.herokuapp.com";
-const String FULL_API_URI = "https://$API_URI";
+const String API_URI = "176.126.237.70:3002";
+const String FULL_API_URI = "http://$API_URI";
 
 class NetworkResponse{
   int statusCode;

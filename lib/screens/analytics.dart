@@ -23,25 +23,8 @@ class FavoritesScreen extends StatelessWidget {
         child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             margin: const EdgeInsets.only(top: 10, bottom: 100),
-            child: Consumer<Companies>(
-              builder: (context, _, __) {
-                return Consumer<Favorites>(
-                  builder: (context, __, ___) {
-                    if (!Provider.of<Favorites>(context).loadedItems) {
-                      return const Center(
-                        child: AdaptiveLoader(),
-                      );
-                    }
-                    return Column(
-                      children: List.generate(
-                          Provider.of<Favorites>(context).favorites.length,
-                          (index) => CompanyPreview(
-                                company: Provider.of<Companies>(context)[Provider.of<Favorites>(context).favorites[index]],
-                              )),
-                    );
-                  },
-                );
-              },
+            child: const Center(
+              child: AdaptiveLoader(),
             )),
       );
     }
