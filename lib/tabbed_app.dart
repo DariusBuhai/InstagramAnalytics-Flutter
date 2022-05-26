@@ -6,8 +6,6 @@ import 'package:instagram_analytics/screens/auth/auth.dart';
 import 'package:instagram_analytics/screens/prediction.dart';
 import 'package:instagram_analytics/screens/analytics.dart';
 import 'package:instagram_analytics/screens/profile.dart';
-import 'models/company.dart';
-import 'models/favorites.dart';
 import 'screens/components/bottom_bar.dart';
 
 class TabbedApp extends StatefulWidget {
@@ -54,7 +52,6 @@ class TabbedAppState extends State<TabbedApp>
       return MultiProvider(
         providers: [
           ListenableProvider<User>(create: (_) => loggedUser),
-          ChangeNotifierProvider<Favorites>(create: (_) => Favorites()..load()),
         ],
         child: ActualTabbedApp(
           pageController: _pageController,

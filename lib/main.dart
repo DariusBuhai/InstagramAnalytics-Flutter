@@ -6,8 +6,6 @@ import 'package:instagram_analytics/utils/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 
-import 'models/company.dart';
-
 void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -71,7 +69,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
           child: MultiProvider(
             providers: [
               ChangeNotifierProvider(create: (_) => settingsProvider),
-              ChangeNotifierProvider(create: (_) => Companies()..load()),
             ],
             child: Consumer<Settings>(
               builder: (context, _, __){

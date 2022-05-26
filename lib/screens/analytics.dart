@@ -1,16 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:instagram_analytics/components/buttons/adaptive_button.dart';
 import 'package:instagram_analytics/components/page_templates/main_page_template.dart';
 
 import '../components/adaptive_loader.dart';
-import '../models/company.dart';
-import '../models/favorites.dart';
 import '../models/user.dart';
 import '../utils/route.dart';
 import 'auth/auth.dart';
-import 'prediction.dart';
 
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({Key key}) : super(key: key);
