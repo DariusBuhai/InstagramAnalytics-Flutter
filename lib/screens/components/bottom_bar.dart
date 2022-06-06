@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_analytics/models/user.dart';
+import 'package:instagram_analytics/providers/user.dart';
 import '../../components/bottom_navigation_bar.dart';
 import 'dart:io' show Platform;
 
@@ -24,6 +24,16 @@ class BottomBar extends StatelessWidget{
                 CupertinoIcons.hand_thumbsup_fill,
                 size: 26),
             label: "Prediction",
+          ),
+          const BottomNavigationBarItem(
+            icon: Icon(
+                CupertinoIcons.at,
+                size: 26
+            ),
+            activeIcon: Icon(
+                CupertinoIcons.at,
+                size: 26),
+            label: "Instagram",
           ),
           BottomNavigationBarItem(
               icon: Icon(

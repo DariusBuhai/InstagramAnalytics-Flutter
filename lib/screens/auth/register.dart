@@ -8,7 +8,7 @@ import 'package:instagram_analytics/utils/network.dart';
 import 'package:instagram_analytics/utils/validators.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_analytics/models/user.dart';
+import 'package:instagram_analytics/providers/user.dart';
 import 'package:instagram_analytics/utils/route.dart';
 
 import 'login.dart';

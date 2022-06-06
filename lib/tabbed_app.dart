@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_analytics/providers/instagram_account.dart';
+import 'package:instagram_analytics/screens/connect_account.dart';
 import 'package:provider/provider.dart';
 import 'package:instagram_analytics/screens/components/loading_page.dart';
-import 'package:instagram_analytics/models/user.dart';
+import 'package:instagram_analytics/providers/user.dart';
 import 'package:instagram_analytics/screens/prediction.dart';
 import 'package:instagram_analytics/screens/profile.dart';
 import 'screens/components/bottom_bar.dart';
@@ -24,6 +26,8 @@ class TabbedAppState extends State<TabbedApp>
   bool loadingPage = true;
   bool loggedIn = false;
   List<Widget> _tabViews;
+  InstagramAccount instagramAccountProvider;
+
 
   @override
   void initState() {
@@ -36,6 +40,8 @@ class TabbedAppState extends State<TabbedApp>
 
   Future<void> asyncInitState() async{
     loggedIn = await User.isLoggedIn(context);
+    instagramAccountProvider = InstagramAccount();
+    await instagramAccountProvider.loadUser();
     setState(() {
       loadingPage = false;
     });
@@ -50,6 +56,7 @@ class TabbedAppState extends State<TabbedApp>
       return MultiProvider(
         providers: [
           ListenableProvider<User>(create: (_) => loggedUser),
+          ListenableProvider<InstagramAccount>(create: (_) => instagramAccountProvider)
         ],
         child: ActualTabbedApp(
           pageController: _pageController,
@@ -83,8 +90,9 @@ class TabbedAppState extends State<TabbedApp>
 
   void _setTabViews() {
     _tabViews = [
-      PredictionScreen(),
-      const ProfileScreen(),
+      PredictionScreen(changePage: _changePage),
+      const ConnectAccountScreen(),
+      ProfileScreen(changePage: _changePage),
     ];
   }
 }

@@ -3,7 +3,7 @@ import 'package:instagram_analytics/components/page_templates/page_template.dart
 import 'package:instagram_analytics/components/tiles/tile_info.dart';
 import 'package:instagram_analytics/components/tiles/tile_input.dart';
 import 'package:instagram_analytics/components/tiles/tile_text.dart';
-import 'package:instagram_analytics/models/user.dart';
+import 'package:instagram_analytics/providers/user.dart';
 import 'package:instagram_analytics/utils/network.dart';
 import 'package:instagram_analytics/utils/route.dart';
 import 'package:instagram_analytics/utils/theme.dart';

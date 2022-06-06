@@ -12,6 +12,7 @@ class PageTemplate extends StatelessWidget {
   final String previousPageTitle;
   final bool pageLoaded;
   final bool refreshIndicator;
+  final bool automaticallyImplyLeading;
   ScrollController scrollController;
 
   PageTemplate(
@@ -23,7 +24,8 @@ class PageTemplate extends StatelessWidget {
       this.previousPageTitle = "",
       this.pageLoaded = true,
       this.refreshIndicator = true,
-      this.scrollController})
+      this.scrollController,
+      this.automaticallyImplyLeading = true})
       : super(key: key);
 
   Future<void> _onRefresh() async {
@@ -36,6 +38,7 @@ class PageTemplate extends StatelessWidget {
     if (Platform.isAndroid) {
       return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: automaticallyImplyLeading,
           iconTheme: const IconThemeData(color: Colors.white),
           backgroundColor: Theme.of(context).primaryColor,
           title: Text(
@@ -80,10 +83,10 @@ class PageTemplate extends StatelessWidget {
                     if (pageLoaded) return child;
                     return const Center(
                         child: SizedBox(
-                        width: 50,
-                        child: AdaptiveLoader(
-                          radius: 15,
-                        ),
+                      width: 50,
+                      child: AdaptiveLoader(
+                        radius: 15,
+                      ),
                     ));
                   },
                 ));
@@ -104,8 +107,8 @@ class PageTemplate extends StatelessWidget {
         brightness: Theme.of(context).brightness,
       ),
       body: Builder(
-        builder: (context){
-          if(refreshIndicator) {
+        builder: (context) {
+          if (refreshIndicator) {
             Scrollbar(
               controller: scrollController,
               child: CustomScrollView(
@@ -118,16 +121,16 @@ class PageTemplate extends StatelessWidget {
                     child: pageLoaded
                         ? child
                         : const Padding(
-                        padding: EdgeInsets.only(top: 50),
-                        child: AdaptiveLoader(
-                          radius: 15,
-                        )),
+                            padding: EdgeInsets.only(top: 50),
+                            child: AdaptiveLoader(
+                              radius: 15,
+                            )),
                   )
                 ],
               ),
             );
           }
-          if(pageLoaded) {
+          if (pageLoaded) {
             return child;
           }
           return const Center(

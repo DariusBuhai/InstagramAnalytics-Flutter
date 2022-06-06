@@ -9,96 +9,112 @@ import 'package:instagram_analytics/components/buttons/adaptive_button.dart';
 import 'package:instagram_analytics/components/fields/input_field.dart';
 import 'package:instagram_analytics/components/page_templates/page_template.dart';
 import 'package:instagram_analytics/components/tiles/tile_date_picker.dart';
-import 'package:instagram_analytics/components/tiles/tile_text.dart';
 import 'package:instagram_analytics/models/prediction.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 import '../components/alert.dart';
 import '../components/tiles/tile_input.dart';
-import '../models/user.dart';
+import '../providers/instagram_account.dart';
+import '../providers/user.dart';
 import '../utils/functions.dart';
 
 import 'dart:io';
 
-class PredictionScreen extends StatelessWidget {
-  PredictionScreen({Key key}) : super(key: key);
-  PostDetails postDetails = PostDetails();
+import '../utils/route.dart';
+import 'connect_account.dart';
 
+class PredictionScreen extends StatefulWidget {
+  final Function(int index, {bool animated}) changePage;
+
+  const PredictionScreen({Key key, this.changePage}) : super(key: key);
+
+  @override
+  PredictionScreenState createState() => PredictionScreenState();
+}
+
+class PredictionScreenState extends State<PredictionScreen> {
+  PostDetails postDetails;
+  String prediction;
   List<FocusNode> focusNodes = List.generate(5, (_) => FocusNode());
 
-  String prediction = "";
+  @override
+  void initState() {
+    postDetails = PostDetails(
+      meanLikes: Provider.of<InstagramAccount>(context, listen: false).medianLikes,
+      followers: Provider.of<InstagramAccount>(context, listen: false).followers,
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return PageTemplate(
       title: "Predict Posts",
+      automaticallyImplyLeading: false,
       child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           height: MediaQuery.of(context).size.height,
           child: Column(
             children: [
               Expanded(
-                child:  KeyboardActions(
+                child: KeyboardActions(
                     config: _buildConfig(context),
                     child: Column(
                       children: [
                         const SizedBox(height: 20),
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: CupertinoColors.activeGreen.withOpacity(.5),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: GestureDetector(
-                                    onTap: () => _updateUserProfilePicture(context),
-                                    child: Container(
-                                      color: Theme.of(context).cardColor,
-                                      width: 120,
-                                      height: 120,
-                                      child: const Center(
-                                        child: Icon(CupertinoIcons.photo_fill_on_rectangle_fill, size: 30),
-                                      ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: GestureDetector(
+                                  onTap: () =>
+                                      _updateUserProfilePicture(context),
+                                  child: Container(
+                                    color: Theme.of(context).cardColor,
+                                    width: 120,
+                                    height: 120,
+                                    child: const Center(
+                                      child: Icon(
+                                          CupertinoIcons
+                                              .photo_fill_on_rectangle_fill,
+                                          size: 30),
                                     ),
-                                  )
+                                  ),
+                                )),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  TileInput(
+                                    text: "Faces:",
+                                    icon: CupertinoIcons.person_alt_circle_fill,
+                                    focusNode: focusNodes[0],
+                                    keyboardType: TextInputType.number,
+                                    value: postDetails.faces.toString(),
+                                    autoselect: true,
+                                    onChanged: (val) {
+                                      postDetails.faces = int.tryParse(val);
+                                    },
+                                  ),
+                                  const SizedBox(height: 5),
+                                  TileInput(
+                                    text: "Smiles:",
+                                    icon: FontAwesomeIcons.smile,
+                                    focusNode: focusNodes[1],
+                                    keyboardType: TextInputType.number,
+                                    value: postDetails.smiles.toString(),
+                                    autoselect: true,
+                                    onChanged: (val) {
+                                      postDetails.smiles = int.tryParse(val);
+                                    },
+                                  ),
+                                ],
                               ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    TileInput(
-                                      text: "Faces:",
-                                      icon: CupertinoIcons.person_alt_circle_fill,
-                                      focusNode: focusNodes[0],
-                                      keyboardType: TextInputType.number,
-                                      value: postDetails.faces.toString(),
-                                      autoselect: true,
-                                      onChanged: (val){
-                                        postDetails.faces = int.tryParse(val);
-                                      },
-                                    ),
-                                    TileInput(
-                                      text: "Smiles:",
-                                      icon: FontAwesomeIcons.smile,
-                                      focusNode: focusNodes[1],
-                                      keyboardType: TextInputType.number,
-                                      value: postDetails.smiles.toString(),
-                                      autoselect: true,
-                                      onChanged: (val){
-                                        postDetails.smiles = int.tryParse(val);
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
+                            )
+                          ],
                         ),
                         const SizedBox(height: 10),
                         InputField(
@@ -111,16 +127,18 @@ class PredictionScreen extends StatelessWidget {
                           value: postDetails.description,
                           text: "Post Description",
                           keyboardType: TextInputType.multiline,
-                          onChanged: (val){
+                          onChanged: (val) {
                             postDetails.description = val;
                           },
                         ),
-                        const SizedBox(height: 5,),
+                        const SizedBox(
+                          height: 5,
+                        ),
                         TileDatePicker(
                           text: "Post datetime:",
                           icon: CupertinoIcons.calendar,
                           value: postDetails.postedOn,
-                          onChanged: (newDate){
+                          onChanged: (newDate) {
                             postDetails.postedOn = newDate;
                           },
                         ),
@@ -133,15 +151,22 @@ class PredictionScreen extends StatelessWidget {
                           ),
                           child: Column(
                             children: [
-                              AdaptiveButton(
-                                text: "Connect instagram account    +",
-                                iconData: FontAwesomeIcons.instagram,
-                                color: CupertinoColors.black,
-                                textColor: Colors.white,
-                                onTap: (){
-
-                                },
-                              ),
+                              if(!Provider.of<InstagramAccount>(context).connected)
+                                AdaptiveButton(
+                                  text: "Connect instagram account    +",
+                                  iconData: FontAwesomeIcons.instagram,
+                                  color: CupertinoColors.black,
+                                  textColor: Colors.white,
+                                  onTap: () => widget.changePage(1),
+                                ),
+                              if(Provider.of<InstagramAccount>(context).connected)
+                                AdaptiveButton(
+                                  text: "IG: ${Provider.of<InstagramAccount>(context).username}",
+                                  color: CupertinoColors.black,
+                                  textColor: Colors.white,
+                                  iconData: CupertinoIcons.at,
+                                  onTap: () => widget.changePage(1),
+                                ),
                               const SizedBox(height: 5),
                               TileInput(
                                 text: "Mean likes:",
@@ -150,7 +175,7 @@ class PredictionScreen extends StatelessWidget {
                                 keyboardType: TextInputType.number,
                                 value: postDetails.meanLikes.toString(),
                                 autoselect: true,
-                                onChanged: (val){
+                                onChanged: (val) {
                                   postDetails.meanLikes = int.tryParse(val);
                                 },
                               ),
@@ -161,7 +186,7 @@ class PredictionScreen extends StatelessWidget {
                                 keyboardType: TextInputType.number,
                                 autoselect: true,
                                 value: postDetails.followers.toString(),
-                                onChanged: (val){
+                                onChanged: (val) {
                                   postDetails.followers = int.tryParse(val);
                                 },
                               ),
@@ -173,24 +198,35 @@ class PredictionScreen extends StatelessWidget {
                           text: "Predict likes",
                           textColor: Colors.white,
                           iconData: CupertinoIcons.percent,
-                          onTap: () async{
+                          onTap: () async {
                             var response = await postDetails.predictLikes();
-                            alertDialog(context, title: "Prediction:", subtitle: "Your post will get aprox.: ${response['likes']} likes, representing ${response['likes_over_mean']} of total likes mean.");
+                            setState(() {
+                              if(postDetails.meanLikes==0){
+                                prediction = "${response['likes_over_mean']} likes over mean.";
+                              }else{
+                                prediction = "${response['likes']} likes\n ${response['likes_over_mean']} likes over mean";
+                              }
+                            });
+                            alertDialog(context,
+                                title: "Prediction:",
+                                subtitle:
+                                    "Your post will get: $prediction");
                           },
                         ),
-                        const SizedBox(height: 10),
-                        Text("Prediction: 100 likes, 0.22 likes/mean",textAlign: TextAlign.center, style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600
-                        ),),
+                        if (prediction != null) const SizedBox(height: 20),
+                        if (prediction != null)
+                          Text(
+                            "Prediction: $prediction",
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600),
+                          ),
                         const SizedBox(height: 120),
                       ],
-                    )
-                ),
+                    )),
               ),
             ],
-          )
-      ),
+          )),
     );
   }
 
@@ -223,7 +259,8 @@ class PredictionScreen extends StatelessWidget {
       alertDialog(
         context,
         title: "Permissions denied",
-        subtitle: "Please change photos permissions from settings and try again!",
+        subtitle:
+            "Please change photos permissions from settings and try again!",
         confirmText: "Settings",
         onConfirmed: () {
           openAppSettings();

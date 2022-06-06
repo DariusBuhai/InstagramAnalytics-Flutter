@@ -6,9 +6,9 @@ import '../utils/network.dart';
 
 class PostDetails{
   String description;
-  int meanLikes, followers;
+  int meanLikes;
   DateTime postedOn;
-  int faces, smiles;
+  int faces, smiles, followers;
 
   PostDetails(
       {this.description = "",
@@ -32,7 +32,6 @@ class PostDetails{
   }
 
   Future<dynamic> predictLikes() async{
-    print(toJson());
     var response = await http.get(Uri.http(API_URI, "api/get/predict_likes", toJson().map((key, value) => MapEntry(key, value.toString()))));
     if(response.statusCode==200){
       return jsonDecode(response.body);
