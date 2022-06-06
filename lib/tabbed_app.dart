@@ -83,7 +83,7 @@ class TabbedAppState extends State<TabbedApp>
 
   void _setTabViews() {
     _tabViews = [
-      CompaniesScreen(),
+      PredictionScreen(),
       const ProfileScreen(),
     ];
   }
