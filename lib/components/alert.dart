@@ -1,9 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dialogs/flutter_dialogs.dart';
-import 'package:provider/provider.dart';
 
 void alertDialog(BuildContext context, {String alertId, String title, String subtitle, Function onConfirmed, Function onDismissed, bool destructive = false, String confirmText}) {
 

@@ -115,7 +115,7 @@ class TileDatePickerState extends State<TileDatePicker>{
         enableDrag: true,
         context: context,
         builder: (BuildContext builder) {
-          return Container(
+          return SizedBox(
               height: 350,
               child: Column(
                 children: <Widget>[
@@ -126,7 +126,7 @@ class TileDatePickerState extends State<TileDatePicker>{
                     height: 300,
                     child: CupertinoDatePicker(
                       initialDateTime: widget.value,
-                      mode: CupertinoDatePickerMode.date,
+                      mode: CupertinoDatePickerMode.dateAndTime,
                       onDateTimeChanged: (DateTime value) {
                         setState(() {
                           widget.value = value;

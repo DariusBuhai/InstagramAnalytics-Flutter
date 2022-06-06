@@ -53,7 +53,7 @@ class AdaptiveIconButton extends StatelessWidget {
   final Icon icon;
   final Function onPressed;
 
-  AdaptiveIconButton({@required this.icon, @required this.onPressed});
+  const AdaptiveIconButton({@required this.icon, @required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

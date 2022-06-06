@@ -26,14 +26,14 @@ class TileButton extends StatelessWidget {
       children: <Widget>[
         Builder(
           builder: (_){
-            if(this.icon!=null){
+            if(icon!=null){
               return Padding(
-                padding: EdgeInsets.only(right: 10.0),
+                padding: const EdgeInsets.only(right: 10.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Container(
                     child: Padding(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                           top: 10,
                           bottom: 10,
                           left: 10,
@@ -42,7 +42,7 @@ class TileButton extends StatelessWidget {
                       child: Icon(
                         icon,
                         size: 23,
-                        color: this.iconColor==null ? Theme.of(context).primaryColorLight : this.iconColor,
+                        color: iconColor ?? Theme.of(context).primaryColorLight,
                       ),
                     ),
                   ),
@@ -68,10 +68,11 @@ class TileButton extends StatelessWidget {
         ),
         Builder(
             builder: (_){
-              if(leading!=null)
+              if(leading!=null) {
                 return leading;
+              }
               return Padding(
-                padding: EdgeInsets.only(right: 10),
+                padding: const EdgeInsets.only(right: 10),
                 child: Icon(
                   CupertinoIcons.right_chevron,
                   color: Theme.of(context).textTheme.subtitle2.color.withOpacity(.6),
@@ -86,14 +87,14 @@ class TileButton extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: Container(
-        margin: EdgeInsets.only(
+        margin: const EdgeInsets.only(
           top: 4,
           bottom: 4,
         ),
         height: 50,
         child: InkWell(
           child: Container(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
                 horizontal: 5
             ),
             decoration: BoxDecoration(
@@ -105,7 +106,7 @@ class TileButton extends StatelessWidget {
               children: <Widget>[
                 child,
                 if (children != null) ...[
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Wrap(

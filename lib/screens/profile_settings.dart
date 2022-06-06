@@ -44,7 +44,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
       ),
       child: Column(
         children: [
-          TileText(text: "User Details"),
+          const TileText(text: "User Details"),
           TileInput(
             text: "Username:",
             icon: CupertinoIcons.person_solid,

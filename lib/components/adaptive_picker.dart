@@ -19,8 +19,9 @@ class AdaptivePicker extends StatelessWidget implements PreferredSizeWidget{
         height: _kKeyboardHeight,
         child: CupertinoPicker(
             onSelectedItemChanged: (index){
-              if(onChanged!=null)
+              if(onChanged!=null) {
                 onChanged(values[index]);
+              }
             },
             scrollController: FixedExtentScrollController(initialItem: values.contains(value) ? values.indexOf(value) : 0),
             itemExtent: 50,
@@ -41,6 +42,6 @@ class AdaptivePicker extends StatelessWidget implements PreferredSizeWidget{
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(_kKeyboardHeight);
+  Size get preferredSize => const Size.fromHeight(_kKeyboardHeight);
   
 }

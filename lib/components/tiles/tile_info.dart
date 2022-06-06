@@ -7,7 +7,7 @@ class TileInfo extends StatelessWidget {
   final IconData icon;
   final Widget child;
   final Color iconColor;
-  TileInfo({
+  const TileInfo({
     this.text,
     this.value,
     this.icon,

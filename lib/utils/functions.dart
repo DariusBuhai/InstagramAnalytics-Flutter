@@ -3,16 +3,11 @@ import 'dart:typed_data';
 import 'package:instagram_analytics/components/adaptive_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 String parseDateToString(DateTime _date) {
   try {
-    return _date.year.toString() +
-        "-" +
-        _date.month.toString() +
-        "-" +
-        _date.day.toString();
+    return "${_date.year}-${_date.month}-${_date.day} ${_date.hour}:${_date.minute}";
   } catch (_) {
     return "";
   }
@@ -22,8 +17,8 @@ String parseDateToString(DateTime _date) {
 void toggleAdaptiveOverlayLoader(BuildContext context, {bool hide = false}) {
   if (!hide) {
     Loader.show(context,
-        progressIndicator: AdaptiveLoader(radius: 20),
-        themeData: Theme.of(context).copyWith(accentColor: Colors.black38),
+        progressIndicator: const AdaptiveLoader(radius: 20),
+        themeData: Theme.of(context).copyWith(colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.black38)),
         overlayColor: Theme.of(context).primaryColorDark.withOpacity(.7));
   } else {
     Loader.hide();

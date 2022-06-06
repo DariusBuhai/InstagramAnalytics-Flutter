@@ -40,16 +40,16 @@ class AdaptiveAppBar extends StatelessWidget{
 
     return CupertinoNavigationBar(
       middle: Text(
-        this.title,
+        title,
         style: TextStyle(
             color: Theme.of(context).textTheme.headline6.color
         ),
       ),
-      leading: this.leading,
-      previousPageTitle: this.previousPageTitle,
-      trailing: this.trailing,
+      leading: leading,
+      previousPageTitle: previousPageTitle,
+      trailing: trailing,
       backgroundColor: Colors.transparent,
-      automaticallyImplyLeading: this.automaticallyImplyLeading,
+      automaticallyImplyLeading: automaticallyImplyLeading,
       brightness: Theme.of(context).brightness,
       border: null,
     );

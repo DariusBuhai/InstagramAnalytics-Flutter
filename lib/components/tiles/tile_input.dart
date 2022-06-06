@@ -104,7 +104,7 @@ class TileInputState extends State<TileInput> {
     Widget content = Row(
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.only(right: 0.0),
+          padding: const EdgeInsets.only(right: 0.0),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Container(

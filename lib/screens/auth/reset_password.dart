@@ -11,7 +11,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_analytics/models/user.dart';
 import 'package:instagram_analytics/utils/route.dart';
-import 'package:provider/provider.dart';
 
 import 'login.dart';
 

@@ -9,7 +9,6 @@ import 'package:instagram_analytics/utils/route.dart';
 import 'package:instagram_analytics/utils/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({Key key}) : super(key: key);
@@ -49,7 +48,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TileText(text: "Old password"),
+          const TileText(text: "Old password"),
           const SizedBox(height: 10),
           InputField(
               text: "Old password",
@@ -58,7 +57,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               obscureText: true,
               controller: _oldPasswordInput,
           ),
-          TileText(text: "New password"),
+          const TileText(text: "New password"),
           const SizedBox(height: 10),
           InputField(
               text: "New password",

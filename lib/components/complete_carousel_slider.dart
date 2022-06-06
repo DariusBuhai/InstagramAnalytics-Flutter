@@ -24,8 +24,7 @@ class _CompleteCarouselSliderState extends State<CompleteCarouselSlider>{
 
   @override
   void initState() {
-    if(widget.carouselController==null)
-      widget.carouselController = CarouselController();
+    widget.carouselController ??= CarouselController();
     super.initState();
   }
 
@@ -34,12 +33,12 @@ class _CompleteCarouselSliderState extends State<CompleteCarouselSlider>{
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
               Expanded(
                 child: TileText(
-                  padding: EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.only(bottom: 8),
                   text: widget.title
                 ),
               ),
@@ -76,7 +75,7 @@ class _CompleteCarouselSliderState extends State<CompleteCarouselSlider>{
               activeShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0))
             ),
             onTap: (position) {
-              widget.carouselController.animateToPage(position.toInt(), duration: Duration(milliseconds: 300));
+              widget.carouselController.animateToPage(position.toInt(), duration: const Duration(milliseconds: 300));
             }
         )
       ],
@@ -89,8 +88,9 @@ class _CompleteCarouselSliderState extends State<CompleteCarouselSlider>{
     IconData _icon = CupertinoIcons.arrow_right;
 
     _text = widget.itemsNames[_jumpToPage];
-    if(widget.currentPage==widget.itemsNames.length-1)
+    if(widget.currentPage==widget.itemsNames.length-1) {
       _icon = CupertinoIcons.arrow_turn_up_left;
+    }
 
     return CupertinoButton(
         onPressed: () => widget.carouselController.animateToPage(_jumpToPage),

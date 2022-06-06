@@ -1,4 +1,3 @@
-import 'package:instagram_analytics/utils/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:io' show Platform;

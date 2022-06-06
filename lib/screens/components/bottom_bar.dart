@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:instagram_analytics/models/user.dart';
 import '../../components/bottom_navigation_bar.dart';
 import 'dart:io' show Platform;
@@ -27,14 +25,6 @@ class BottomBar extends StatelessWidget{
                 size: 26),
             label: "Prediction",
           ),
-          const BottomNavigationBarItem(
-              icon: Icon(
-                  CupertinoIcons.doc_chart,
-                  size: 26),
-              activeIcon: Icon(
-                  CupertinoIcons.doc_chart_fill,
-                  size: 26),
-              label: "Analytics"),
           BottomNavigationBarItem(
               icon: Icon(
                   Platform.isIOS ? CupertinoIcons.person_circle : Icons.person_outline,

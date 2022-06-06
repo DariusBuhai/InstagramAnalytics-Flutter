@@ -11,7 +11,7 @@ class BlankPageTemplate extends StatelessWidget {
   final Widget largeTitle;
   final bool pageLoaded;
 
-  BlankPageTemplate(
+  const BlankPageTemplate(
       {Key key,
       @required this.child,
       this.onRefresh,
@@ -61,14 +61,14 @@ class BlankPageTemplate extends StatelessWidget {
       ),
       body: Scrollbar(
         child: RefreshIndicator(
-            onRefresh: () => this.onRefresh(),
+            onRefresh: () => onRefresh(),
             child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
+                physics: const AlwaysScrollableScrollPhysics(),
                 child: Container(
-                  padding: EdgeInsets.only(top: 50),
+                  padding: const EdgeInsets.only(top: 50),
                   constraints: BoxConstraints(
                       minHeight: MediaQuery.of(context).size.height - 100),
-                  child: this.child,
+                  child: child,
                 )
             )
         ),

@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:io' show Platform;
 
 Widget inputDoneView(BuildContext context, {Function() callback, double height}) {
   return Container(
@@ -21,7 +19,7 @@ Widget inputDoneView(BuildContext context, {Function() callback, double height})
         color: Theme.of(context).cardColor,
         child: Row(
           children: [
-            Spacer(),
+            const Spacer(),
             Padding(
               padding: const EdgeInsets.all(5.0),
               child: InkWell(

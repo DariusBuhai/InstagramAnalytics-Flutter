@@ -32,7 +32,7 @@ class AppBackButton extends StatelessWidget {
             children: <Widget>[
               Padding(
                 // if has the x, not padding
-                padding: x ? EdgeInsets.all(0.0) : EdgeInsets.only(right: 10.0),
+                padding: x ? const EdgeInsets.all(0.0) : const EdgeInsets.only(right: 10.0),
                 child: Icon(
                     icon,
                     size: 14,

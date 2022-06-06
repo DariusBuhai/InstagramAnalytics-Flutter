@@ -7,19 +7,14 @@ import 'package:instagram_analytics/components/tiles/tile_text.dart';
 import 'package:instagram_analytics/models/user.dart';
 import 'package:instagram_analytics/screens/profile_settings.dart';
 import 'package:instagram_analytics/tabbed_app.dart';
-import 'package:instagram_analytics/utils/functions.dart';
 import 'package:instagram_analytics/utils/route.dart';
 import 'package:instagram_analytics/utils/settings.dart';
 import 'package:instagram_analytics/utils/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:in_app_review/in_app_review.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'dart:io';
 import 'change_password.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -30,7 +25,7 @@ class ProfileScreen extends StatelessWidget {
     return BlankPageTemplate(
       onRefresh: _onRefresh,
       child: _UserOptions(
-          updateUserProfilePicture: () => _updateUserProfilePicture(context)
+
       ),
     );
   }
@@ -40,55 +35,6 @@ class ProfileScreen extends StatelessWidget {
     await loggedUser.reloadUser();
   }
 
-  void _updateUserProfilePicture(BuildContext context) async {
-    File _image;
-    final picker = ImagePicker();
-
-    try {
-      toggleAdaptiveOverlayLoader(context);
-      final pickedFile = await picker.pickImage(
-        source: ImageSource.gallery,
-      );
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-        _cropProfilePicture(_image, context);
-      }
-      toggleAdaptiveOverlayLoader(context, hide: true);
-    } catch (_) {
-      alertDialog(
-        context,
-        title: "Permissions denied",
-        subtitle: "Please change photos permissions from settings and try again!",
-        confirmText: "Settings",
-        onConfirmed: () {
-          openAppSettings();
-        },
-      );
-    }
-    toggleAdaptiveOverlayLoader(context, hide: true);
-  }
-
-  void _cropProfilePicture(File image, BuildContext context) async {
-    toggleAdaptiveOverlayLoader(context);
-    try {
-      File croppedFile = await ImageCropper().cropImage(
-          sourcePath: image.path,
-          aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-          aspectRatioPresets: [CropAspectRatioPreset.square],
-          androidUiSettings: AndroidUiSettings(
-              toolbarTitle: 'Profile Image',
-              toolbarColor: Theme.of(context).primaryColor,
-              toolbarWidgetColor: Colors.white,
-              initAspectRatio: CropAspectRatioPreset.original,
-              lockAspectRatio: false),
-          iosUiSettings: const IOSUiSettings(
-            minimumAspectRatio: 1.0,
-          ));
-      await loggedUser.updateUserProfilePicture(
-          ByteData.view(croppedFile.readAsBytesSync().buffer));
-    } catch (_) {}
-    toggleAdaptiveOverlayLoader(context, hide: true);
-  }
 }
 
 class _UserOptions extends StatelessWidget {
@@ -107,10 +53,6 @@ class _UserOptions extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if(loggedUser!=null)
-            Consumer<User>(
-              builder: (_, __, ___) => _UserImage(updateUserProfilePicture: updateUserProfilePicture),
-            ),
           if(loggedUser!=null)
             Consumer<User>(
               builder: (_, __, ___) =>  _UserName(),

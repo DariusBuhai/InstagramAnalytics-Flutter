@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart';
+
 
 class InputField extends StatefulWidget{
   final String text;
@@ -10,13 +10,19 @@ class InputField extends StatefulWidget{
   final TextInputType keyboardType;
   TextEditingController controller;
   final Function(String) onChanged;
+  final Function() onAutoSave;
   final Function onSubmitted;
   final double borderRadius;
   final double height;
   final bool autofocus;
   final TextCapitalization textCapitalization;
+  final bool disabled;
+  final int maxLines;
+  final int minLines;
+  final List<String> autofillHints;
   FocusNode focusNode;
   String value;
+  Color color;
 
   InputField({Key key,
     this.text = "",
@@ -26,12 +32,17 @@ class InputField extends StatefulWidget{
     this.controller,
     this.onChanged,
     this.onSubmitted,
+    this.onAutoSave,
     this.borderRadius = 10,
-    this.height = 45,
+    this.height = 50,
     this.autofocus = false,
     this.focusNode,
     this.textCapitalization = TextCapitalization.none,
-    this.value
+    this.value,
+    this.maxLines=1,
+    this.minLines=1,
+    this.disabled = false,
+    this.color, this.autofillHints
   }) : super(key: key);
 
   @override
@@ -40,6 +51,7 @@ class InputField extends StatefulWidget{
 
 class _InputFieldState extends State<InputField> {
   TextEditingController controller;
+  Timer autosaveTimer;
 
   @override
   void initState() {
@@ -56,106 +68,87 @@ class _InputFieldState extends State<InputField> {
   @override
   Widget build(BuildContext context) {
 
-    if(Platform.isIOS){
-      return SizedBox(
-        height: widget.height,
-        child: CupertinoTextField(
-          controller: controller,
-          autofocus: widget.autofocus,
-          focusNode: widget.focusNode,
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          onSubmitted: (_){
-            if(widget.onSubmitted!=null) {
-              widget.onSubmitted();
-            }
-          },
-          textCapitalization: widget.textCapitalization,
-          obscureText: widget.obscureText,
-          keyboardType: widget.keyboardType,
-          textInputAction: widget.onSubmitted==null ? TextInputAction.next : TextInputAction.done,
-          onChanged: (val){
-            if(widget.onChanged!=null)
-              widget.onChanged(val);
-          },
-          style: TextStyle(
-              color: Theme.of(context).textTheme.subtitle2.color
-          ),
-          placeholder: widget.text,
-          prefix: Padding(
-            padding: EdgeInsets.only(left: 15),
-            child: Icon(
-              widget.icon,
-              color: Theme.of(context).textTheme.subtitle2.color,
-              size: 18,
-            ),
-          ),
-          clearButtonMode: OverlayVisibilityMode.never,
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(widget.borderRadius),
-          ),
-        ),
-      );
-    }
-
     return Material(
       color: Colors.transparent,
       child: Container(
-        height: widget.height,
-        alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
+          color: widget.color,
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
-        child: Padding(
-          padding: EdgeInsets.only(left: 0),
-          child: TextField(
-            onSubmitted: (_){
-              if(widget.onSubmitted!=null) {
-                widget.onSubmitted();
-              }
-            },
-            textInputAction: widget.onSubmitted==null ? TextInputAction.next : TextInputAction.done,
-            enableInteractiveSelection: true,
-            enableSuggestions: true,
-            obscureText: widget.obscureText,
-            controller: controller,
-            textCapitalization: widget.textCapitalization,
-            autofocus: widget.autofocus,
-            focusNode: widget.focusNode,
-            onChanged: (val){
-              if(widget.onChanged!=null) {
-                widget.onChanged(val);
-              }
-            },
-            style: TextStyle(
-                color: Theme.of(context).textTheme.subtitle2.color
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: defaultTargetPlatform == TargetPlatform.iOS ? 3 : 0),
+              child: Icon(
+                widget.icon,
+                color: Theme.of(context).textTheme.subtitle2.color,
+                size: 20,
+              ),
             ),
-            keyboardType: widget.keyboardType,
-            decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: widget.text,
-                hintStyle: TextStyle(
-                    fontSize: 17,
+            const SizedBox(width: 15),
+            Expanded(
+              child: TextFormField(
+                onFieldSubmitted: (_){
+                  if(widget.onSubmitted!=null) {
+                    widget.onSubmitted();
+                  }
+                  if(widget.onAutoSave!=null) {
+                    widget.onAutoSave();
+                  }
+                },
+                maxLines: widget.maxLines,
+                minLines: widget.minLines,
+                keyboardAppearance: Theme.of(context).brightness,
+                enabled: !widget.disabled,
+                textInputAction: widget.keyboardType==TextInputType.multiline ? TextInputAction.newline : (widget.onSubmitted==null ? TextInputAction.next : TextInputAction.done),
+                enableInteractiveSelection: true,
+                enableSuggestions: true,
+                obscureText: widget.obscureText,
+                controller: controller,
+                textCapitalization: widget.textCapitalization,
+                autofocus: widget.autofocus,
+                focusNode: widget.focusNode,
+                onChanged: onChanged,
+                autofillHints: widget.autofillHints,
+                style: TextStyle(
                     color: Theme.of(context).textTheme.subtitle2.color
                 ),
-                contentPadding:
-                const EdgeInsets.only(
-                    left: 20,
-                    right: 20,
-                    bottom: 12,
-                    top: 13
+                textAlignVertical: TextAlignVertical.top,
+                scrollPadding: EdgeInsets.zero,
+                keyboardType: widget.keyboardType,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  isDense: true,
+                  hintText: widget.text,
+                  hintStyle: TextStyle(
+                      fontSize: 17,
+                      color: Theme.of(context).textTheme.subtitle2.color.withOpacity(.4)
+                  ),
+                  contentPadding: EdgeInsets.zero,
                 ),
-                prefixIcon: Icon(
-                  widget.icon,
-                  color: Theme.of(context).textTheme.subtitle2.color,
-                  size: 18,
-                )),
-
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );
+  }
+
+  void onChanged(String value){
+    if(widget.onChanged!=null) {
+      widget.onChanged(value);
+    }
+    if(autosaveTimer!=null && autosaveTimer.isActive) {
+      autosaveTimer.cancel();
+    }
+    autosaveTimer = Timer(const Duration(milliseconds: 500), (){
+      if(widget.onAutoSave!=null) {
+        widget.onAutoSave();
+      }
+    });
   }
 
 }

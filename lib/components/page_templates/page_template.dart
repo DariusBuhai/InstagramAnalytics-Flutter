@@ -59,7 +59,7 @@ class PageTemplate extends StatelessWidget {
                                   MediaQuery.of(context).size.height - 100),
                           child: Builder(
                             builder: (context) {
-                              if (pageLoaded) return this.child;
+                              if (pageLoaded) return child;
                               return const Center(
                                   child: SizedBox(
                                 width: 50,

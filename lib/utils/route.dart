@@ -31,13 +31,13 @@ class Routing {
       PageRouteBuilder(
         maintainState: true,
         pageBuilder: (context, animation1, animation2) => page,
-        transitionDuration: Duration(seconds: 0),
+        transitionDuration: const Duration(seconds: 0),
       ),
     );
   }
 
   static void openFullScreenDialog(BuildContext context, Widget page, {bool replacement = false}) {
-    var pageRoute;
+    PageRoute pageRoute;
     if(Platform.isIOS) {
       pageRoute = CupertinoPageRoute(
         fullscreenDialog: true,
@@ -49,10 +49,11 @@ class Routing {
         builder: (context) => page,
       );
     }
-    if(replacement)
+    if(replacement) {
       Navigator.pushReplacement(context, pageRoute);
-    else
+    } else {
       Navigator.push(context, pageRoute);
+    }
   }
 
   // no going back allowed
@@ -60,7 +61,7 @@ class Routing {
     Navigator.of(context).pushReplacement(
       PageRouteBuilder(
         maintainState: false,
-        transitionDuration: Duration(seconds: 0),
+        transitionDuration: const Duration(seconds: 0),
         pageBuilder: (context, animation1, animation2) => page,
       ),
     );
@@ -87,10 +88,11 @@ class Routing {
   static void closeRoute(BuildContext context) => Navigator.of(context).pop();
 
   static void openUrl(String url) async {
-    if (await canLaunch(url))
+    if (await canLaunch(url)) {
       await launch(url);
-    else
+    } else {
       throw 'Could not launch $url';
+    }
   }
 }
 

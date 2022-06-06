@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:instagram_analytics/screens/components/loading_page.dart';
 import 'package:instagram_analytics/models/user.dart';
-import 'package:instagram_analytics/screens/auth/auth.dart';
 import 'package:instagram_analytics/screens/prediction.dart';
-import 'package:instagram_analytics/screens/analytics.dart';
 import 'package:instagram_analytics/screens/profile.dart';
 import 'screens/components/bottom_bar.dart';
 
@@ -85,8 +83,7 @@ class TabbedAppState extends State<TabbedApp>
 
   void _setTabViews() {
     _tabViews = [
-      const CompaniesScreen(),
-      const FavoritesScreen(),
+      CompaniesScreen(),
       const ProfileScreen(),
     ];
   }

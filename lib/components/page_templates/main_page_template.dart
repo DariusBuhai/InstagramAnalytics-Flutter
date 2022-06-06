@@ -1,10 +1,6 @@
-import 'package:instagram_analytics/components/buttons/adaptive_button.dart';
-import 'package:instagram_analytics/models/user.dart';
-import 'package:instagram_analytics/utils/route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 import 'package:instagram_analytics/components/adaptive_loader.dart';
 import 'dart:io' show Platform;
@@ -82,20 +78,20 @@ class MainPageTemplate extends StatelessWidget {
           title,
           style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 25, color: Colors.white),
         ),
-        actions: [
+        actions: const [
 
         ],
       ),
       body: Scrollbar(
         child: RefreshIndicator(
-            onRefresh: () => this.onRefresh(),
+            onRefresh: () => onRefresh(),
             child: SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
+              physics: const AlwaysScrollableScrollPhysics(),
               child: Container(
-                padding: EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 10),
                 constraints: BoxConstraints(
                     minHeight: MediaQuery.of(context).size.height - 100),
-                child: this.child,
+                child: child,
               ),
             )),
       ),

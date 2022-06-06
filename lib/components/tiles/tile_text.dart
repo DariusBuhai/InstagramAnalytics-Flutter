@@ -5,7 +5,7 @@ class TileText extends StatelessWidget {
   final IconData iconData;
   final EdgeInsets padding;
 
-  TileText({this.text, this.iconData, this.padding = EdgeInsets.zero});
+  const TileText({this.text, this.iconData, this.padding = EdgeInsets.zero});
 
   @override
   Widget build(BuildContext context) {

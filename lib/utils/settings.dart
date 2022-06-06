@@ -17,14 +17,15 @@ class Settings with ChangeNotifier{
   }
 
   void onChangePlatformBrightness(Brightness platformBrightness){
-    if(this._switchAutomatically)
-      this.darkMode = platformBrightness == Brightness.dark;
+    if(_switchAutomatically) {
+      darkMode = platformBrightness == Brightness.dark;
+    }
   }
 
   Future<void> initSettings() async{
-    this._switchAutomatically = await this.getSwitchAutomatically();
-    this._darkMode = await this.getDarkMode();
-    this.notifyListeners();
+    _switchAutomatically = await getSwitchAutomatically();
+    _darkMode = await getDarkMode();
+    notifyListeners();
   }
 
   get darkMode => _darkMode;
@@ -33,18 +34,19 @@ class Settings with ChangeNotifier{
   set darkMode(bool value){
     SharedPreferences.getInstance().then((prefs){
       prefs.setBool("DARK_MODE", value);
-      this._darkMode = value;
-      this.notifyListeners();
+      _darkMode = value;
+      notifyListeners();
     });
   }
 
   set switchAutomatically(bool value) {
-    if(value)
-      this.darkMode = WidgetsBinding.instance.window.platformBrightness==Brightness.dark;
+    if(value) {
+      darkMode = WidgetsBinding.instance.window.platformBrightness==Brightness.dark;
+    }
     SharedPreferences.getInstance().then((prefs){
       prefs.setBool("SWITCH_AUTOMATICALLY", value);
-      this._switchAutomatically = value;
-      this.notifyListeners();
+      _switchAutomatically = value;
+      notifyListeners();
     });
   }
 
