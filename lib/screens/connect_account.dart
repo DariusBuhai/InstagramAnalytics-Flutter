@@ -51,7 +51,7 @@ class ConnectAccountScreen extends StatelessWidget {
                           iconData: Provider.of<InstagramAccount>(context).connected ? CupertinoIcons.refresh : CupertinoIcons.add,
                           onTap: () async{
                             var response = await Provider.of<InstagramAccount>(context, listen: false).loadUser();
-                            if(response is NetworkError){
+                            if(response.runtimeType == NetworkError){
                               response.showAlert(context);
                             }
                           },

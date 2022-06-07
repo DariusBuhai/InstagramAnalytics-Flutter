@@ -22,8 +22,6 @@ import '../utils/functions.dart';
 
 import 'dart:io';
 
-import '../utils/route.dart';
-import 'connect_account.dart';
 
 class PredictionScreen extends StatefulWidget {
   final Function(int index, {bool animated}) changePage;
