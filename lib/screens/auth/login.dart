@@ -63,6 +63,7 @@ class LoginPage extends StatelessWidget {
             text: "Username",
             icon: CupertinoIcons.person_fill,
             keyboardType: TextInputType.emailAddress,
+            color: Theme.of(context).cardColor,
             onChanged: (val){
               _username = val;
             },
@@ -74,6 +75,7 @@ class LoginPage extends StatelessWidget {
             icon: CupertinoIcons.lock_fill,
             obscureText: true,
             height: 50,
+            color: Theme.of(context).cardColor,
             onChanged: (val){
               _password = val;
             },

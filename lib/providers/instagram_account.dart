@@ -30,6 +30,7 @@ class InstagramAccount extends ChangeNotifier {
   }
 
   Future<dynamic> loadUser() async {
+    if(loggedUser==null) return;
     var response = await http.get(Uri.http(API_URI, "api/get/instagram_user",
         {"token": loggedUser.token, "username": username}));
     if (response.statusCode == 200) {

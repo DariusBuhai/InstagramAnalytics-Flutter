@@ -141,54 +141,56 @@ class PredictionScreenState extends State<PredictionScreen> {
                           },
                         ),
                         const SizedBox(height: 10),
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: CupertinoColors.systemRed.withOpacity(.5),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            children: [
-                              if(!Provider.of<InstagramAccount>(context).connected)
-                                AdaptiveButton(
-                                  text: "Connect instagram account    +",
-                                  iconData: FontAwesomeIcons.instagram,
-                                  color: CupertinoColors.black,
-                                  textColor: Colors.white,
-                                  onTap: () => widget.changePage(1),
+                        Consumer<InstagramAccount>(
+                          builder: (_, __, ___) => Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: CupertinoColors.systemRed.withOpacity(.5),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              children: [
+                                if(!Provider.of<InstagramAccount>(context).connected)
+                                  AdaptiveButton(
+                                    text: "Connect instagram account    +",
+                                    iconData: FontAwesomeIcons.instagram,
+                                    color: CupertinoColors.black,
+                                    textColor: Colors.white,
+                                    onTap: () => widget.changePage(1),
+                                  ),
+                                if(Provider.of<InstagramAccount>(context).connected)
+                                  AdaptiveButton(
+                                    text: "IG: ${Provider.of<InstagramAccount>(context).username}",
+                                    color: CupertinoColors.black,
+                                    textColor: Colors.white,
+                                    iconData: CupertinoIcons.at,
+                                    onTap: () => widget.changePage(1),
+                                  ),
+                                const SizedBox(height: 5),
+                                TileInput(
+                                  text: "Mean likes:",
+                                  icon: CupertinoIcons.hand_thumbsup,
+                                  focusNode: focusNodes[3],
+                                  keyboardType: TextInputType.number,
+                                  value: postDetails.meanLikes.toString(),
+                                  autoselect: true,
+                                  onChanged: (val) {
+                                    postDetails.meanLikes = int.tryParse(val);
+                                  },
                                 ),
-                              if(Provider.of<InstagramAccount>(context).connected)
-                                AdaptiveButton(
-                                  text: "IG: ${Provider.of<InstagramAccount>(context).username}",
-                                  color: CupertinoColors.black,
-                                  textColor: Colors.white,
-                                  iconData: CupertinoIcons.at,
-                                  onTap: () => widget.changePage(1),
+                                TileInput(
+                                  text: "Followers:",
+                                  icon: CupertinoIcons.person_3_fill,
+                                  focusNode: focusNodes[4],
+                                  keyboardType: TextInputType.number,
+                                  autoselect: true,
+                                  value: postDetails.followers.toString(),
+                                  onChanged: (val) {
+                                    postDetails.followers = int.tryParse(val);
+                                  },
                                 ),
-                              const SizedBox(height: 5),
-                              TileInput(
-                                text: "Mean likes:",
-                                icon: CupertinoIcons.hand_thumbsup,
-                                focusNode: focusNodes[3],
-                                keyboardType: TextInputType.number,
-                                value: postDetails.meanLikes.toString(),
-                                autoselect: true,
-                                onChanged: (val) {
-                                  postDetails.meanLikes = int.tryParse(val);
-                                },
-                              ),
-                              TileInput(
-                                text: "Followers:",
-                                icon: CupertinoIcons.person_3_fill,
-                                focusNode: focusNodes[4],
-                                keyboardType: TextInputType.number,
-                                autoselect: true,
-                                value: postDetails.followers.toString(),
-                                onChanged: (val) {
-                                  postDetails.followers = int.tryParse(val);
-                                },
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                         const SizedBox(height: 20),

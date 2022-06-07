@@ -57,6 +57,7 @@ class RegisterPage extends StatelessWidget {
             text: "Username",
             icon: CupertinoIcons.person_fill,
             controller: _nameInput,
+            color: Theme.of(context).cardColor,
             height: 50,
             textCapitalization: TextCapitalization.words,
           ),
@@ -66,6 +67,7 @@ class RegisterPage extends StatelessWidget {
             icon: CupertinoIcons.mail_solid,
             keyboardType: TextInputType.emailAddress,
             controller: _emailInput,
+            color: Theme.of(context).cardColor,
             height: 50,
           ),
           const SizedBox(height: 20),
@@ -74,6 +76,7 @@ class RegisterPage extends StatelessWidget {
             icon: CupertinoIcons.lock_open_fill,
             obscureText: true,
             controller: _passwordInput,
+            color: Theme.of(context).cardColor,
             height: 50,
           ),
           const SizedBox(height: 20),
@@ -82,6 +85,7 @@ class RegisterPage extends StatelessWidget {
             icon: CupertinoIcons.lock_fill,
             obscureText: true,
             controller: _passwordAgainInput,
+            color: Theme.of(context).cardColor,
             height: 50,
             onSubmitted: () {
               _registerAction(context);

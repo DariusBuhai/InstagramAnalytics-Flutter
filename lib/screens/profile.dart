@@ -142,7 +142,9 @@ class ProfileScreen extends StatelessWidget {
 
   void _onRefresh() async {
     HapticFeedback.mediumImpact();
-    await loggedUser.reloadUser();
+    if(loggedUser!=null){
+      await loggedUser.reloadUser();
+    }
   }
 
 }
