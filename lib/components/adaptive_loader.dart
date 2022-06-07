@@ -20,7 +20,7 @@ class AdaptiveLoader extends StatelessWidget{
         height: 2 * radius,
         width: 2 * radius,
         child: CircularProgressIndicator(
-          color: Theme.of(context).primaryColor,
+          color: Theme.of(context).primaryColorDark,
         ),
       ),
     );

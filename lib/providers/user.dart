@@ -145,13 +145,6 @@ class User extends ChangeNotifier {
             return (await User.performFacebookAuth(context)) == true;
           }
           break;
-        case "linkedin":
-          var authToken = optionsBox.get("token");
-          if (authToken != null) {
-            loggedUser = await User.getFromSessionToken(authToken);
-            if (loggedUser != null) return true;
-          }
-          break;
       }
     } catch (e) {
       print(e);
@@ -228,25 +221,6 @@ class User extends ChangeNotifier {
     var optionsBox = Hive.box('auth');
     optionsBox.put("user-identifier", credential.userIdentifier);
     optionsBox.put("login-type", "apple");
-    optionsBox.put("token", responseData["token"]);
-    optionsBox.put('logged-in', true);
-    return true;
-  }
-
-  static Future<dynamic> performLinkedInAuth(
-      BuildContext context, String code) async {
-    var response = await http.post(Uri.http(API_URI, "api/post/auth/linkedin"),
-        body: jsonEncode(
-            {"platform": Platform.isIOS ? 'ios' : 'android', "code": code}));
-    if (response.statusCode != 200) return NetworkError(response: response);
-    var responseData = json.decode(response.body);
-    loggedUser = await User.getFromSessionToken(responseData["token"]);
-    if (loggedUser == null) return NetworkError(response: response);
-    loggedUser.notifyListeners();
-
-    /// Save credentials in Hive box
-    var optionsBox = Hive.box('auth');
-    optionsBox.put("login-type", "linkedin");
     optionsBox.put("token", responseData["token"]);
     optionsBox.put('logged-in', true);
     return true;

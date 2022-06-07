@@ -12,8 +12,17 @@ import '../providers/user.dart';
 import '../utils/route.dart';
 import 'auth/auth.dart';
 
-class InstagramAccountScreen extends StatelessWidget {
+class InstagramAccountScreen extends StatefulWidget {
   const InstagramAccountScreen({Key key}) : super(key: key);
+
+
+  @override
+  InstagramAccountScreenState createState() => InstagramAccountScreenState();
+}
+
+class InstagramAccountScreenState extends State<InstagramAccountScreen> {
+
+  bool loadingUsername = false;
 
   @override
   Widget build(BuildContext context) {
@@ -50,11 +59,14 @@ class InstagramAccountScreen extends StatelessWidget {
                             textColor: Colors.white,
                             color: Provider.of<InstagramAccount>(context).connected ? Colors.blue : Colors.deepOrangeAccent,
                             iconData: Provider.of<InstagramAccount>(context).connected ? CupertinoIcons.refresh : CupertinoIcons.add,
+                            loading: loadingUsername,
                             onTap: () async{
+                              setState((){loadingUsername=true;});
                               var response = await Provider.of<InstagramAccount>(context, listen: false).loadUser();
                               if(response.runtimeType == NetworkError){
                                 response.showAlert(context);
                               }
+                              setState((){loadingUsername=false;});
                             },
                           ),
                         )

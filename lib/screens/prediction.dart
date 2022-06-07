@@ -17,7 +17,6 @@ import 'package:provider/provider.dart';
 import '../components/alert.dart';
 import '../components/tiles/tile_input.dart';
 import '../providers/instagram_account.dart';
-import '../providers/user.dart';
 import '../utils/functions.dart';
 
 import 'dart:io';
@@ -32,10 +31,11 @@ class PredictionScreen extends StatefulWidget {
   PredictionScreenState createState() => PredictionScreenState();
 }
 
-class PredictionScreenState extends State<PredictionScreen> {
+class PredictionScreenState extends State<PredictionScreen> with AutomaticKeepAliveClientMixin<PredictionScreen> {
   PostDetails postDetails;
   String prediction;
   List<FocusNode> focusNodes = List.generate(5, (_) => FocusNode());
+  TextEditingController facesController = TextEditingController(), smilesController = TextEditingController();
 
   @override
   void initState() {
@@ -43,6 +43,8 @@ class PredictionScreenState extends State<PredictionScreen> {
       meanLikes: Provider.of<InstagramAccount>(context, listen: false).medianLikes,
       followers: Provider.of<InstagramAccount>(context, listen: false).followers,
     );
+    facesController.text = postDetails.faces.toString();
+    smilesController.text = postDetails.smiles.toString();
     super.initState();
   }
 
@@ -69,16 +71,23 @@ class PredictionScreenState extends State<PredictionScreen> {
                                 borderRadius: BorderRadius.circular(10),
                                 child: GestureDetector(
                                   onTap: () =>
-                                      _updateUserProfilePicture(context),
+                                      _addPostImage(context),
                                   child: Container(
                                     color: Theme.of(context).cardColor,
                                     width: 120,
                                     height: 120,
-                                    child: const Center(
+                                    child: postDetails.image==null ? const Center(
                                       child: Icon(
                                           CupertinoIcons
                                               .photo_fill_on_rectangle_fill,
                                           size: 30),
+                                    ) : Image(
+                                      image: MemoryImage(
+                                        postDetails.image,
+                                      ),
+                                      width: 120,
+                                      height: 120,
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
                                 )),
@@ -93,6 +102,7 @@ class PredictionScreenState extends State<PredictionScreen> {
                                     keyboardType: TextInputType.number,
                                     value: postDetails.faces.toString(),
                                     autoselect: true,
+                                    providedController: facesController,
                                     onChanged: (val) {
                                       postDetails.faces = int.tryParse(val);
                                     },
@@ -104,6 +114,7 @@ class PredictionScreenState extends State<PredictionScreen> {
                                     focusNode: focusNodes[1],
                                     keyboardType: TextInputType.number,
                                     value: postDetails.smiles.toString(),
+                                    providedController: smilesController,
                                     autoselect: true,
                                     onChanged: (val) {
                                       postDetails.smiles = int.tryParse(val);
@@ -241,7 +252,7 @@ class PredictionScreenState extends State<PredictionScreen> {
         }));
   }
 
-  void _updateUserProfilePicture(BuildContext context) async {
+  void _addPostImage(BuildContext context) async {
     File _image;
     final picker = ImagePicker();
 
@@ -286,9 +297,15 @@ class PredictionScreenState extends State<PredictionScreen> {
           iosUiSettings: const IOSUiSettings(
             minimumAspectRatio: 1.0,
           ));
-      await loggedUser.updateUserProfilePicture(
-          ByteData.view(croppedFile.readAsBytesSync().buffer));
+      await postDetails.addPostImage(ByteData.view(croppedFile.readAsBytesSync().buffer));
+      setState((){
+        facesController.text = postDetails.faces.toString();
+        smilesController.text = postDetails.smiles.toString();
+      });
     } catch (_) {}
     toggleAdaptiveOverlayLoader(context, hide: true);
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
