@@ -148,7 +148,9 @@ class PredictionScreenState extends State<PredictionScreen> with AutomaticKeepAl
                           icon: CupertinoIcons.calendar,
                           value: postDetails.postedOn,
                           onChanged: (newDate) {
-                            postDetails.postedOn = newDate;
+                            setState((){
+                              postDetails.postedOn = newDate;
+                            });
                           },
                         ),
                         const SizedBox(height: 10),

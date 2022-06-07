@@ -5,26 +5,17 @@ import 'package:flutter/material.dart';
 
 import '../input_done_view.dart';
 
-class TileDatePicker extends StatefulWidget {
+
+class TileDatePicker extends StatelessWidget{
+
   final String text;
   DateTime value;
   final Function(DateTime) onChanged;
   final IconData icon;
   final Widget child;
 
-  TileDatePicker({Key key,
-    @required this.text,
-    this.value,
-    this.icon,
-    this.child,
-    this.onChanged
-  }) : super(key: key);
-
-  @override
-  State<TileDatePicker> createState() => TileDatePickerState();
-}
-
-class TileDatePickerState extends State<TileDatePicker>{
+  TileDatePicker({Key key, this.text, this.onChanged, this.icon, this.child, this.value}) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     // if there is no icon, show text only,
@@ -44,7 +35,7 @@ class TileDatePickerState extends State<TileDatePicker>{
                   bottom: 10,
                 ),
                 child: Icon(
-                  widget.icon,
+                  icon,
                   color: Theme.of(context).primaryColorLight,
                   size: 20,
                 ),
@@ -57,7 +48,7 @@ class TileDatePickerState extends State<TileDatePicker>{
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                widget.text,
+                text,
                 style: TextStyle(
                     fontFamily: Theme.of(context).textTheme.subtitle2.fontFamily,
                     fontSize: 17,
@@ -66,7 +57,7 @@ class TileDatePickerState extends State<TileDatePicker>{
                 ),
               ),
               Text(
-                parseDateToString(widget.value),
+                parseDateToString(value),
                 style: TextStyle(
                     fontSize: 14,
                     fontFamily: Theme.of(context).textTheme.subtitle2.fontFamily,
@@ -83,7 +74,7 @@ class TileDatePickerState extends State<TileDatePicker>{
     );
 
     return GestureDetector(
-      onTap: _showSelector,
+      onTap: () => _showSelector(context),
       child: Container(
         margin: const EdgeInsets.only(
           top: 4,
@@ -110,7 +101,7 @@ class TileDatePickerState extends State<TileDatePicker>{
 
   }
 
-  void _showSelector(){
+  void _showSelector(BuildContext context){
     showModalBottomSheet(
         enableDrag: true,
         context: context,
@@ -125,14 +116,11 @@ class TileDatePickerState extends State<TileDatePicker>{
                   SizedBox(
                     height: 300,
                     child: CupertinoDatePicker(
-                      initialDateTime: widget.value,
+                      initialDateTime: value,
                       mode: CupertinoDatePickerMode.dateAndTime,
                       onDateTimeChanged: (DateTime value) {
-                        setState(() {
-                          widget.value = value;
-                        });
-                        if(widget.onChanged!=null) {
-                          widget.onChanged(value);
+                        if(onChanged!=null) {
+                          onChanged(value);
                         }
                       },
                     ),
